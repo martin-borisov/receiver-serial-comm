@@ -1,0 +1,94 @@
+package mb.serial.connection.yamaha.response;
+
+import static java.text.MessageFormat.format;
+import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.CONFIG;
+import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.REPORT;
+
+public class ResponseEvent {
+    
+    public enum EventType {
+        REPORT, CONFIG
+    }
+    
+    private EventType type;
+    
+    /* For report events */
+    private ControlType controlType;
+    private GuardStatus guardStatus;
+    private CommandType commandType;
+    private String commandData;
+    
+    /* For config events */
+    private String model, swVer, status;
+    private int dataLength;
+    
+    public ResponseEvent(EventType type) {
+        this.type = type;
+    }
+
+    public ResponseEvent(EventType type, String model, String swVer, String status, int dataLength) {
+        this.type = type;
+        this.model = model;
+        this.swVer = swVer;
+        this.status = status;
+        this.dataLength = dataLength;
+    }
+
+    public ResponseEvent(EventType type, ControlType controlType, GuardStatus guardStatus, CommandType commandType,
+            String commandData) {
+        this.type = type;
+        this.controlType = controlType;
+        this.guardStatus = guardStatus;
+        this.commandType = commandType;
+        this.commandData = commandData;
+    }
+    
+    @Override
+    public String toString() {
+        String out = null;
+        if(REPORT == type) {
+            out = format("Type: {0}, Control: {1}, Guard: {2}, Command: {3}, Value: {4}", 
+                  type, controlType, guardStatus, commandType, commandData);
+        } else if(CONFIG == type) {
+            out = format("Type: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}", 
+                  type, model, swVer, dataLength, status);
+        }
+        return out;
+    }
+
+    public EventType getType() {
+        return type;
+    }
+
+    public ControlType getControlType() {
+        return controlType;
+    }
+
+    public GuardStatus getGuardStatus() {
+        return guardStatus;
+    }
+
+    public CommandType getCommandType() {
+        return commandType;
+    }
+
+    public String getCommandData() {
+        return commandData;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getSwVer() {
+        return swVer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public int getDataLength() {
+        return dataLength;
+    }
+}

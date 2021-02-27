@@ -1,0 +1,8 @@
+commands:
+   poweroff:
+      data: <STX>07A1E<ETX>
+   volumeup:
+      data: <STX>07A1A<ETX>
+   volumedown:
+      data: <STX>07A1B<ETX>
+   

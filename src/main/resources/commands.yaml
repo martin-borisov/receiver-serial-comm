@@ -1,8 +1,31 @@
 commands:
    poweroff:
-      data: <STX>07A1E<ETX>
+      data: "<STX>07A1E<ETX>"
    volumeup:
-      data: <STX>07A1A<ETX>
+      data: "<STX>07A1A<ETX>"
    volumedown:
-      data: <STX>07A1B<ETX>
+      data: "<STX>07A1B<ETX>"
+   input:
+      data: "<STX>07A{0}<ETX>"
+      params:
+         phono: "14"
+         cd: "15"
+         tuner: "16"
+         cdr: "19"
+         tape: "18"
+         dvd: "C1"
+         dtv: "54"
+         cbl: "C0"
+         vcr1: "0F"
+         vcr2: "13"
+         vaux: "44"
+         multich: "87"
+         xm: "B4"
+   puredirect:
+      data: "<STX>07E8{0}<ETX>"
+      params: 
+         on: "0"
+         off: "2"
+         
+   
    

@@ -1,5 +1,7 @@
 package mb.serial;
 
+import java.util.List;
+
 import com.beust.jcommander.Parameter;
 
 public class Args {
@@ -18,6 +20,9 @@ public class Args {
     
     @Parameter(names = "--command")
     private String command;
+    
+    @Parameter(names = "--param")
+    private List<String> params;
     
     public boolean isList() {
         return list;
@@ -57,5 +62,13 @@ public class Args {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public List<String> getParams() {
+        return params;
+    }
+
+    public void setParams(List<String> params) {
+        this.params = params;
     }
 }

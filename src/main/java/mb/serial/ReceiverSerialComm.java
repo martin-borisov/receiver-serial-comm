@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.fazecast.jSerialComm.SerialPort;
 
 import mb.serial.command.Command;
+import mb.serial.command.SimpleCommand;
 import mb.serial.command.SimpleCommandMap;
 import mb.serial.command.yamaha.CommandPower;
 import mb.serial.command.yamaha.CommandReady;
@@ -54,6 +55,7 @@ public class ReceiverSerialComm {
                         // Simple commands
                         cmd = SimpleCommandMap.load().get(arg.getCommand());
                         if(cmd != null) {
+                            ((SimpleCommand)cmd).setParamValues(arg.getParams());
                             runner.send(cmd);
                         }
                     }

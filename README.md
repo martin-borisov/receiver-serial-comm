@@ -15,7 +15,7 @@ Receivers assumed to work, but not tested:
 * RX-Z9
 
 ## How to run
-Building the maven project produces a single all-in-one jar file which is all that' is needed to run the app. 
+Building the maven project produces a single all-in-one jar file which is all that is needed to run the app. 
 
 ## Example commands
 
@@ -34,4 +34,4 @@ Change the input to tuner.
 java -jar receiver-serial-comm-0.0.1-SNAPSHOT-jar-with-dependencies.jar --port ttyUSB0 --command input --param tuner
 ```
 
-Currently the list of supported commands is limited, but will hopefully be expanded in the future.
+Currently the list of supported commands is limited, but will hopefully expand in the future.

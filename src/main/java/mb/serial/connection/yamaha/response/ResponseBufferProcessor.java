@@ -18,7 +18,6 @@ public class ResponseBufferProcessor {
     public void processBuffer(byte[] buf, int numBytes) {
         for(int i = 0; i < numBytes; i++) {
             
-            
             byte b = buf[i];
             ByteDelim delim = ByteDelim.fromByte(b);
             if(delim != null) {

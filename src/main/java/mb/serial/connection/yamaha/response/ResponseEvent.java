@@ -47,10 +47,10 @@ public class ResponseEvent {
     public String toString() {
         String out = null;
         if(REPORT == type) {
-            out = format("Type: {0}, Control: {1}, Guard: {2}, Command: {3}, Value: {4}", 
+            out = format("T: {0}, Ctrl: {1}, Grd: {2}, Cmd: {3}, V: {4}", 
                   type, controlType, guardStatus, commandType, commandData);
         } else if(CONFIG == type) {
-            out = format("Type: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}", 
+            out = format("T: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}", 
                   type, model, swVer, dataLength, status);
         }
         return out;

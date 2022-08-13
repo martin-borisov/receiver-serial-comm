@@ -79,7 +79,7 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
     
     public void eventReceived(ResponseEvent event) {
         
-        LOG.info(format("Event received: {0}", event));
+        System.out.println(format("<<< {0}" , event));
         
         if(successEvent != null) {
             if(EventType.CONFIG == successEvent.getType() && EventType.CONFIG == event.getType()) {

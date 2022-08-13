@@ -13,20 +13,22 @@ import mb.serial.connection.yamaha.response.ResponseBufferProcessor;
 import mb.serial.connection.yamaha.response.ResponseEvent;
 import mb.serial.connection.yamaha.response.ResponseParser;
 
-public class YamahaSerialConnection implements SerialConnection {
-    private static final Logger LOG = Logger.getLogger(YamahaSerialConnection.class.getName());
+public class YamahaBlockingSerialConnection implements SerialConnection {
+    private static final Logger LOG = Logger.getLogger(YamahaBlockingSerialConnection.class.getName());
     
     private SerialPort port;
     private ResponseParser parser;
     private ResponseBufferProcessor processor;
     private EventCallback callback;
+    private boolean running;
     
-    public YamahaSerialConnection(String portName) {
+    public YamahaBlockingSerialConnection(String portName) {
         port = SerialPort.getCommPort(portName);
         port.setBaudRate(9600);
         port.setNumDataBits(8);
         port.setNumStopBits(SerialPort.ONE_STOP_BIT);
         port.setParity(SerialPort.NO_PARITY);
+        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
         
         // Try to open serial port
         if(port.openPort()) {
@@ -39,10 +41,12 @@ public class YamahaSerialConnection implements SerialConnection {
         processor = new ResponseBufferProcessor(data -> {
             eventReceived(data);
         });
+        
+        // Start reading
         startInputReaderThread();
     }
     
-    YamahaSerialConnection(String portName, EventCallback callback) {
+    YamahaBlockingSerialConnection(String portName, EventCallback callback) {
         this(portName);
         this.callback = callback;
     }
@@ -54,8 +58,13 @@ public class YamahaSerialConnection implements SerialConnection {
 
     @Override
     public void close() {
+        LOG.info("Trying to close port; current state: " + 
+                (port.isOpen() ? "OPEN" : "CLOSED"));
+        running = false;
+        
         if(port.isOpen()) {
             port.closePort();
+            System.out.println("Port closed"); // NB: For some reason the logger stops printing after this point?
         }
     }
     
@@ -70,32 +79,30 @@ public class YamahaSerialConnection implements SerialConnection {
     }
 
     private void startInputReaderThread() {
+        running = true;
         Thread reader = new Thread(new Runnable() {
             public void run() {
-                while(true) {
-                    
-                    // Wait until some data arrives
-                    while (port.bytesAvailable() == 0) {
-                        System.out.println("no bytes");
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                    
-                    // Process new data
-                    byte[] buf = new byte[port.bytesAvailable()];
+                while(running) {
+                    byte[] buf = new byte[1024];
                     int bytesRead = port.readBytes(buf, buf.length);
-                    processor.processBuffer(buf, bytesRead);
+                    
+                    if(bytesRead > 0) {
+                        processor.processBuffer(buf, bytesRead);
+                    } else {
+                        
+                        // NB: For some reason the logger stops printing after port is closed?
+                        System.out.println("Read thread -> port probably already closed");
+                    }
                 }
             }
         });
         reader.setDaemon(true);
         reader.start();
+        
     }
     
     private void eventReceived(String data) {
-        LOG.info(format("Event raw data received: {0} ", data));
+        LOG.fine(format("Event raw data received: {0} ", data));
         ResponseEvent event = parser.parse(data);
         
         if(callback != null) {

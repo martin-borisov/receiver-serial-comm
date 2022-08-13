@@ -1,5 +1,7 @@
 package mb.serial;
 
+import static java.text.MessageFormat.format;
+
 import com.beust.jcommander.JCommander;
 import com.fazecast.jSerialComm.SerialPort;
 
@@ -8,12 +10,15 @@ import mb.serial.command.SimpleCommand;
 import mb.serial.command.SimpleCommandMap;
 import mb.serial.command.yamaha.CommandPower;
 import mb.serial.command.yamaha.CommandReady;
+import mb.serial.command.yamaha.CommandVolume;
 import mb.serial.connection.yamaha.response.ResponseEvent;
 import mb.serial.connection.yamaha.response.ResponseEvent.EventType;
 import mb.serial.runner.CommandRunner;
 import mb.serial.runner.CommandRunnerFactory;
 
 public class ReceiverSerialComm {
+    
+    private static CommandRunner runner;
 
     public static void main(String[] args) throws Exception {
         
@@ -24,36 +29,47 @@ public class ReceiverSerialComm {
         // List ports
         if(arg.isList()) {
             for (SerialPort serialPort : SerialPort.getCommPorts()) {
-                System.out.println(serialPort.getDescriptivePortName() + 
-                        " : " + serialPort.getSystemPortName());
+                System.out.println(format("{0} : {1}", 
+                        serialPort.getDescriptivePortName(), serialPort.getSystemPortName()));
             }
         }
         
         if(arg.getPort() != null && !arg.getPort().isEmpty()) {
 
+            
+            // Shutdown gracefully
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    if(runner != null) {
+                        runner.close();
+                        System.out.println("Command runner closed");
+                    }
+                }
+            });
+            
             // Open connection
-            CommandRunner runner = null;
             try {
                 runner = CommandRunnerFactory.createYamahaRunner(arg.getPort());
 
                 // Execute command
                 if (arg.getCommand() != null && !arg.getCommand().isEmpty()) {
-                    Command cmd;
                     switch (arg.getCommand()) {
                     case "poweron":
-                        cmd = new CommandPower(true);
-                        runner.send(cmd, 3, 3000, new ResponseEvent(EventType.CONFIG));
+                        runner.send(new CommandPower(true), 3, 3000, new ResponseEvent(EventType.CONFIG));
+                        runner.send(new CommandReady());
                         break;
 
                     case "ready":
-                        cmd = new CommandReady();
-                        runner.send(cmd);
+                        runner.send(new CommandReady());
                         break;
+                        
+                    case "volume":
+                        runner.send(new CommandVolume(arg.getParams()));
                             
                     default:
                         
                         // Simple commands
-                        cmd = SimpleCommandMap.load().get(arg.getCommand());
+                        Command cmd = SimpleCommandMap.load().get(arg.getCommand());
                         if(cmd != null) {
                             ((SimpleCommand)cmd).setParamValues(arg.getParams());
                             runner.send(cmd);
@@ -62,14 +78,12 @@ public class ReceiverSerialComm {
                 }
 
                 // Monitor for a while
-                Thread.sleep(arg.getWait() > 0 ? arg.getWait() * 1000 : Integer.MAX_VALUE);
+                int wait = arg.getWait() > 0 ? arg.getWait() * 1000 : Integer.MAX_VALUE;
+                System.out.println(format("Monitoring for {0,number,#} seconds", wait / 1000));
+                Thread.sleep(wait);
                 
             } catch (Exception e) {
                 throw e;
-            } finally {
-                if (runner != null) {
-                    runner.close();
-                }
             }
         }
     }

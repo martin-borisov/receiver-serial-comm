@@ -26,6 +26,14 @@ commands:
       params: 
          on: "0"
          off: "2"
+   # An example system command which sets the main volume to -80
+   test:
+      data: "<STX>23027<ETX>"
+   # Testing OSD messages with following two commands
+   msg:
+      data: "<STX>21000<ETX>"
+   blah:
+      data: "<STX>3Blah<ETX>"
          
    
    

@@ -1,27 +1,31 @@
 package mb.serial.connection.yamaha.response;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+
 import java.util.List;
+
+import mb.serial.command.yamaha.CommandUtil;
 
 /**
  * Page 22, 23
  */
 public enum CommandType {
-    SYSTEM("00", new IndexedCmdDataParser(Arrays.asList("OK", "Busy", "Standby"))),
-    WARNING("01", new IndexedCmdDataParser(Arrays.asList("Over Current", "DC Detect", "Power Trouble", "Over Heat"))),
-    XM_MESSAGE("06", new IndexedCmdDataParser(Arrays.asList("Check Antenna", "Updating", "No Signal", "Loading", "Off Air", "Unavailable"))),
-    FORMAT("10", new IndexedCmdDataParser(Arrays.asList("Analog", "PCM", "DSD", "Digital", "Dolby Digital"))), // TODO Continue on Page 21
-    SAMPLING("11", new IndexedCmdDataParser(Arrays.asList("Analog", "8kHz", "11.025kHz", "12kHz", "16kHz", "24kHz", "32kHz", "44.1kHz"))), // TODO Continue on Page 21
-    CHANNEL_F_R("12"),
+    SYSTEM("00", new IndexedCmdDataParser(asList("OK", "Busy", "Standby"))),
+    WARNING("01", new IndexedCmdDataParser(asList("Over Current", "DC Detect", "Power Trouble", "Over Heat"))),
+    XM_MESSAGE("06", new IndexedCmdDataParser(asList("Check Antenna", "Updating", "No Signal", "Loading", "Off Air", "Unavailable"))),
+    FORMAT("10", new IndexedCmdDataParser(asList("Analog", "PCM", "DSD", "Digital", "Dolby Digital"))), // TODO Continue on Page 21
+    SAMPLING("11", new IndexedCmdDataParser(asList("Analog", "8kHz", "11.025kHz", "12kHz", "16kHz", "24kHz", "32kHz", "44.1kHz"))), // TODO Continue on Page 21
+    CHANNEL_F_R("12", new IndexedCmdDataParser(asList("1+1", "1/0", "2/0", "3/0", "2/1"))), // TODO Continue on Page 21
     CHANNEL_LFE("13"),
     BITRATE("14"),
     DIALOG("15"),
     FLAG("16"),
-    POWER("20"), 
-    INPUT("21"), 
+    POWER("20", new IndexedCmdDataParser(asList("ALL OFF", "ALL ON"))), 
+    INPUT("21", new IndexedCmdDataParser(asList("PHONO", "CD", "TUNER", "CD-R", "MD/TAPE", "DVD", "DTV", "CBL/SAT", 
+            "SAT", "VCR1", "DVR/VCR2", "VCR3/DVR", "V-AUX/DOCK", "NET/USB", "XM", "Multi CH"))), 
     AUDIO_OR_DECODER("22"), 
     MUTE("23"), 
-    MAIN_VOLUME("26"), 
+    MAIN_VOLUME("26", new VolumeCmdDataParser()), 
     PROGRAM("28"),
     TUNER_PAGE("29"), 
     PRESET_NO("2A"), 
@@ -84,6 +88,21 @@ public enum CommandType {
             }
             return value;
         }
-        
+    }
+    
+    private static class VolumeCmdDataParser implements ReportCmdDataParser {
+
+        @Override
+        public String parseCmdData(String data) {
+            String val;
+            if("00".equals(data)) {
+                val = "MUTE";
+            } else {
+                
+                // Scale from 39 to 232 decimal corresponds to -80dB to +16.5dB / page 22
+                val = String.valueOf(CommandUtil.map(Integer.valueOf(data, 16), 39, 232, -80, 16.5)) + "dB";
+            }
+            return val;
+        }
     }
 }

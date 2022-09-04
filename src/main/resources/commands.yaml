@@ -21,15 +21,87 @@ commands:
          vaux: "44"
          multich: "87"
          xm: "B4"
+         
+   # Audio / Decoder Mode
+   inputmode:
+      data: "<STX>07E{0}<ETX>"
+      params: 
+         auto: "A6"
+         digital: "A9"
+         analog: "AA"
+         dts: "A8"
+         aac: "3B"
+      
+   # Simulates a press of the "advanced" up button on the RX-V2400 remote
+   upbutton:
+      data: "<STX>07AC5<ETX>"
+      
+   # EFFECT mode
+   effect:
+      data: "<STX>07E27<ETX>"
+      
+   # STRAIGHT mode
+   straight:
+      data: "<STX>07EE0<ETX>"
+      
+   # Set the dimmer 
+   dimmer: 
+      data: "<STX>2610{0}<ETX>"
+      params: 
+         '0': "0"
+         '1': "1"
+         '2': "2"
+         '3': "3"
+         '4': "4"
+         
+   # Query some parameters
+   query:
+      data: "<STX>220{0}<ETX>"
+      params: 
+         tuningfreq: "00"
+         mainvolume: "01"
+         maininput: "03"
+         
+   mute:
+      data: "<STX>07E{0}<ETX>"
+      params: 
+         full: "A2"
+         partial: "DF"
+         off: "A3"
+   
+   # "puredirect" not available on RX-V2400
    puredirect:
       data: "<STX>07E8{0}<ETX>"
       params: 
          on: "0"
          off: "2"
+         
+   tunerpage:
+      data: "<STX>07AE{0}<ETX>"
+      params: 
+         A: "0"
+         B: "1"
+         C: "2"
+         D: "3"
+         E: "4"
+         
+   tunerpreset:
+      data: "<STX>07AE{0}<ETX>"
+      params: 
+         '1': "5"
+         '2': "6"
+         '3': "7"
+         '4': "8"
+         '5': "9"
+         '6': "A"
+         '7': "B"
+         '8': "C"
+         
    # An example system command which sets the main volume to -80
    test:
       data: "<STX>23027<ETX>"
-   # Testing OSD messages with following two commands
+      
+   # Test OSD messages with following two commands
    msg:
       data: "<STX>21000<ETX>"
    blah:

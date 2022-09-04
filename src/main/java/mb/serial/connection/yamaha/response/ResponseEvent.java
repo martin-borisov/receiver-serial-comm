@@ -3,11 +3,12 @@ package mb.serial.connection.yamaha.response;
 import static java.text.MessageFormat.format;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.CONFIG;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.REPORT;
+import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.TEXT;
 
 public class ResponseEvent {
     
     public enum EventType {
-        REPORT, CONFIG
+        REPORT, CONFIG, TEXT
     }
     
     private EventType type;
@@ -22,8 +23,17 @@ public class ResponseEvent {
     private String model, swVer, status;
     private int dataLength;
     
+    /* For text events */
+    private TextType textType;
+    
     public ResponseEvent(EventType type) {
         this.type = type;
+    }
+    
+    public ResponseEvent(EventType type, TextType textType, String commandData) {
+        this.type = type;
+        this.textType = textType;
+        this.commandData = commandData;
     }
 
     public ResponseEvent(EventType type, String model, String swVer, String status, int dataLength) {
@@ -52,6 +62,9 @@ public class ResponseEvent {
         } else if(CONFIG == type) {
             out = format("T: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}", 
                   type, model, swVer, dataLength, status);
+        } else if(TEXT == type ) {
+            out = format("T: {0}, Type: {1}, V:{2}", 
+                  type, textType, commandData);
         }
         return out;
     }
@@ -90,5 +103,9 @@ public class ResponseEvent {
 
     public int getDataLength() {
         return dataLength;
+    }
+
+    public TextType getTextType() {
+        return textType;
     }
 }

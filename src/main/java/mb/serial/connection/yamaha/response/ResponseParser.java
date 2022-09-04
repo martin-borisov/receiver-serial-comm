@@ -23,7 +23,9 @@ public class ResponseParser {
 
         if (STX.getStrVal().equals(start)) {
             event = parseReport(data);
-        } else if (DC1.getStrVal().equals(start) || DC2.getStrVal().equals(start) || DC3.getStrVal().equals(start)
+        } else if (DC1.getStrVal().equals(start)) {
+            event = parseDisplayText(data);
+        } else if (DC2.getStrVal().equals(start) || DC3.getStrVal().equals(start)
                 || DC4.getStrVal().equals(start)) {
             event = parseConfig(data);
         } else {
@@ -49,5 +51,11 @@ public class ResponseParser {
         return new ResponseEvent(EventType.REPORT, 
                 type, guard, cmd, cmd.parseData(data.substring(4, 6)));
     }
-
+    
+    private ResponseEvent parseDisplayText(String data) {
+        TextType type = TextType.fromCode(data.substring(0, 2));
+        String text = data.substring(2, 10);
+        
+        return new ResponseEvent(EventType.TEXT, type, text);
+    }
 }

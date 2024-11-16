@@ -17,6 +17,7 @@ public class ResponseEvent {
     private ControlType controlType;
     private GuardStatus guardStatus;
     private CommandType commandType;
+    private ConfigData configData;
     private String commandData;
     
     /* For config events */
@@ -36,12 +37,13 @@ public class ResponseEvent {
         this.commandData = commandData;
     }
 
-    public ResponseEvent(EventType type, String model, String swVer, String status, int dataLength) {
+    public ResponseEvent(EventType type, String model, String swVer, String status, int dataLength, ConfigData configData) {
         this.type = type;
         this.model = model;
         this.swVer = swVer;
         this.status = status;
         this.dataLength = dataLength;
+        this.configData = configData;
     }
 
     public ResponseEvent(EventType type, ControlType controlType, GuardStatus guardStatus, CommandType commandType,
@@ -60,8 +62,8 @@ public class ResponseEvent {
             out = format("T: {0}, Ctrl: {1}, Grd: {2}, Cmd: {3}, V: {4}", 
                   type, controlType, guardStatus, commandType, commandData);
         } else if(CONFIG == type) {
-            out = format("T: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}", 
-                  type, model, swVer, dataLength, status);
+            out = format("T: {0}, Model: {1}, SW ver: {2}, Data len: {3}, System status: {4}, Data: {5}", 
+                  type, model, swVer, dataLength, status, configData);
         } else if(TEXT == type ) {
             out = format("T: {0}, Type: {1}, V:{2}", 
                   type, textType, commandData);
@@ -107,5 +109,13 @@ public class ResponseEvent {
 
     public TextType getTextType() {
         return textType;
+    }
+
+    public ConfigData getConfigData() {
+        return configData;
+    }
+
+    public void setConfigData(ConfigData configData) {
+        this.configData = configData;
     }
 }

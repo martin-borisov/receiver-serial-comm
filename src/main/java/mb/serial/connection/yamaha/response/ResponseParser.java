@@ -7,6 +7,7 @@ import static mb.serial.command.ByteDelim.DC3;
 import static mb.serial.command.ByteDelim.DC4;
 import static mb.serial.command.ByteDelim.STX;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mb.serial.connection.yamaha.response.ResponseEvent.EventType;
@@ -36,11 +37,33 @@ public class ResponseParser {
     }
     
     private ResponseEvent parseConfig(String data) {
+
+        // NB: Mapping to report commands in the data structure table of the config command in the protocol doc
         int dataLen = Integer.parseInt(data.substring(6, 8), 16);
         int status = Integer.parseInt(data.substring(15, 16));
         
+        // During power off no other properties are available
+        int power = Integer.parseInt(data.substring(16, 17));
+        
+        ConfigData configData;
+        if(power > 0) {
+            configData = new ConfigData(
+                    CommandType.POWER.parseData(data.substring(16, 17)), 
+                    CommandType.INPUT.parseData(data.substring(18, 19) + data.substring(17, 18)), 
+                    CommandType.AUDIO_OR_DECODER.parseData(data.substring(19, 20)), 
+                    CommandType.MUTE.parseData(data.substring(20, 21)), 
+                    CommandType.MAIN_VOLUME.parseData(data.substring(23, 25)), 
+                    CommandType.TUNER_PAGE.parseData(data.substring(33, 34)), 
+                    CommandType.PRESET_NO.parseData(data.substring(34, 35)));
+        } else {
+            configData = new ConfigData(
+                    CommandType.POWER.parseData(data.substring(16, 17)));
+        }   
+        
+        LOG.log(Level.FINE, configData.toString());
+        
         return new ResponseEvent(EventType.CONFIG, 
-                data.substring(0, 5), data.substring(5, 6), format("{0,choice,0#OK|1#Busy|2#Standby}", status), dataLen);
+                data.substring(0, 5), data.substring(5, 6), format("{0,choice,0#OK|1#Busy|2#Standby}", status), dataLen, configData);
     }
     
     private ResponseEvent parseReport(String data) {

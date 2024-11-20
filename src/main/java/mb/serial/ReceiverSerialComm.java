@@ -60,8 +60,9 @@ public class ReceiverSerialComm {
                         break;
 
                     case "ready":
-                        runner.send(new CommandReady());
+                        runner.send(new CommandReady(), new ResponseEvent(EventType.CONFIG));
                         break;
+
                         
                     case "volume":
                         runner.send(new CommandVolume(arg.getParams()));
@@ -69,9 +70,9 @@ public class ReceiverSerialComm {
                     default:
                         
                         // Simple commands
-                        Command cmd = SimpleCommandMap.load().get(arg.getCommand());
+                        SimpleCommand cmd = SimpleCommandMap.load().get(arg.getCommand());
                         if(cmd != null) {
-                            ((SimpleCommand)cmd).setParamValues(arg.getParams());
+                            cmd.setParamValues(arg.getParams());
                             runner.send(cmd);
                         }
                     }

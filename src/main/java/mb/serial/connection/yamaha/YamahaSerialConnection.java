@@ -68,6 +68,11 @@ public class YamahaSerialConnection implements SerialConnection {
     public void setCallback(EventCallback callback) {
         this.callback = callback;
     }
+    
+    @Override
+    public boolean isOpen() {
+        return port != null && port.isOpen();
+    }
 
     private void startInputReaderThread() {
         Thread reader = new Thread(new Runnable() {
@@ -76,7 +81,6 @@ public class YamahaSerialConnection implements SerialConnection {
                     
                     // Wait until some data arrives
                     while (port.bytesAvailable() == 0) {
-                        System.out.println("no bytes");
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {

@@ -7,4 +7,5 @@ public interface SerialConnection {
     void close();
     EventCallback getCallback();
     void setCallback(EventCallback callback);
+    boolean isOpen();
 }

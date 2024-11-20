@@ -3,6 +3,7 @@ package mb.serial.runner.yamaha;
 import static java.text.MessageFormat.format;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Logger;
 
 import mb.serial.command.Command;
@@ -18,12 +19,18 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
             Logger.getLogger(YamahaSerialCommandRunner.class.getName());
 
     private SerialConnection con;
-    private ResponseEvent successEvent;
+    private PrintStream eventPrinter;
+    private ResponseEvent successEvent, actualEvent;
     private boolean commandSuccessFlag;
     
     public YamahaSerialCommandRunner(SerialConnection con) {
+        this(con, System.out);
+    }
+    
+    public YamahaSerialCommandRunner(SerialConnection con, PrintStream eventPrinter) {
         this.con = con;
         con.setCallback(this);
+        this.eventPrinter = eventPrinter;
     }
     
     @Override
@@ -73,17 +80,31 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
     }
     
     @Override
+    public ResponseEvent send(Command command, ResponseEvent successEvent) throws CommandRunnerException {
+            if(send(command, 3, 1000, successEvent)) {
+                try {
+                    return actualEvent;
+                } finally {
+                    actualEvent = null;
+                }
+            } else {
+                throw new CommandRunnerException("Command execution failed; did not receive expected response");
+            }
+    }
+    
+    @Override
     public void close() {
         con.close();
     }
     
     public void eventReceived(ResponseEvent event) {
         
-        System.out.println(format("<<< {0}" , event));
+        eventPrinter.println(format("<<< {0}" , event));
         
         if(successEvent != null) {
             if(EventType.CONFIG == successEvent.getType() && EventType.CONFIG == event.getType()) {
                 LOG.fine("Expected success event matched");
+                actualEvent = event;
                 commandSuccessFlag = true;
             } else if(EventType.REPORT == successEvent.getType() && EventType.REPORT == event.getType()) {
                 // TODO Compare properties as well

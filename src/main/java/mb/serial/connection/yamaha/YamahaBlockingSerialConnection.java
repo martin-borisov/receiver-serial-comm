@@ -64,7 +64,7 @@ public class YamahaBlockingSerialConnection implements SerialConnection {
         
         if(port.isOpen()) {
             port.closePort();
-            System.out.println("Port closed"); // NB: For some reason the logger stops printing after this point?
+            LOG.info("Port closed"); // NB: For some reason the logger stops printing after this point?
         }
     }
     
@@ -76,6 +76,11 @@ public class YamahaBlockingSerialConnection implements SerialConnection {
     @Override
     public void setCallback(EventCallback callback) {
         this.callback = callback;
+    }
+    
+    @Override
+    public boolean isOpen() {
+        return port != null && port.isOpen();
     }
 
     private void startInputReaderThread() {

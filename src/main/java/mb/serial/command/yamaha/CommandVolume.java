@@ -29,7 +29,7 @@ public class CommandVolume extends SystemCommand {
                 getCommand()[4] = bytes[0];
                 getCommand()[5] = bytes[1];
             } else {
-                throw new IllegalArgumentException("Volume otside valid range of -80 to +16.5");
+                throw new IllegalArgumentException("Volume outside valid range of -80 to +16.5");
             }
             
         } else {

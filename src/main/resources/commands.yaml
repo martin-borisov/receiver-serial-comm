@@ -1,4 +1,6 @@
 commands:
+   poweron:
+      data: "<STX>07A1D<ETX>"
    poweroff:
       data: "<STX>07A1E<ETX>"
    volumeup:

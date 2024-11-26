@@ -4,11 +4,12 @@ import static java.text.MessageFormat.format;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.CONFIG;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.REPORT;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.TEXT;
+import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.NONE;
 
 public class ResponseEvent {
     
     public enum EventType {
-        REPORT, CONFIG, TEXT
+        REPORT, CONFIG, TEXT, NONE
     }
     
     private EventType type;
@@ -67,6 +68,8 @@ public class ResponseEvent {
         } else if(TEXT == type ) {
             out = format("T: {0}, Type: {1}, V:{2}", 
                   type, textType, commandData);
+        } else if(NONE == type) {
+            out = format("T: {0}", type);
         }
         return out;
     }

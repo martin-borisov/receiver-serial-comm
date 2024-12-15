@@ -20,6 +20,7 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
 
     private SerialConnection con;
     private PrintStream eventPrinter;
+    private EventCallback callback;
     private ResponseEvent successEvent, actualEvent;
     private boolean commandSuccessFlag;
     
@@ -33,6 +34,19 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
         this.eventPrinter = eventPrinter;
     }
     
+    public YamahaSerialCommandRunner(SerialConnection con, PrintStream eventPrinter, EventCallback callback) {
+        this(con, eventPrinter);
+        this.callback = callback;
+    }
+
+    public EventCallback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(EventCallback callback) {
+        this.callback = callback;
+    }
+
     @Override
     public void send(Command command) throws CommandRunnerException {
         synchronized(YamahaSerialCommandRunner.class) {
@@ -109,6 +123,10 @@ public class YamahaSerialCommandRunner implements EventCallback, CommandRunner{
             } else if(EventType.REPORT == successEvent.getType() && EventType.REPORT == event.getType()) {
                 // TODO Compare properties as well
             }
+        }
+        
+        if(callback != null) {
+            callback.eventReceived(event);
         }
     }
 }

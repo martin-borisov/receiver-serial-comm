@@ -25,7 +25,7 @@ public enum CommandType {
             "Main On / Zone2 On / Zone3 Off", "Main On / Zone2 Off / Zone3 On", 
             "Main Off / Zone2 On / Zone3 Off", "Main Off / Zone2 Off / Zone3 On"))), 
     INPUT("21", new IndexedCmdDataParser(asList("PHONO", "CD", "TUNER", "CD-R", "MD/TAPE", "DVD", "DTV", "CBL/SAT", 
-            "SAT", "VCR1", "DVR/VCR2", "VCR3/DVR", "V-AUX/DOCK", "NET/USB", "XM", "Multi CH"))), 
+            "SAT", "VCR1", "DVR/VCR2", "VCR3/DVR", "V-AUX/DOCK", "NET/USB", "XM", "MULTI-CH"))), 
     AUDIO_OR_DECODER("22", new IndexedCmdDataParser(asList("AUTO", "UNKNOWN", "DTS", "UNKNOWN", "ANALOG"))), // TODO Continue on Page 22 
     MUTE("23", new IndexedCmdDataParser(asList("OFF", "ON"))), 
     MAIN_VOLUME("26", new VolumeCmdDataParser()), 

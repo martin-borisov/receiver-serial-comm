@@ -1,10 +1,17 @@
 package mb.serial.connection.yamaha.response.ext;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ExtInfoSchemaProperty {
     
     private String key;
     private int startIdx, endIdx;
+    private Map<String, String> values;
     
+    public ExtInfoSchemaProperty() {
+        values = new HashMap<String, String>();
+    }
     public String getKey() {
         return key;
     }
@@ -22,5 +29,11 @@ public class ExtInfoSchemaProperty {
     }
     public void setEndIdx(int endIdx) {
         this.endIdx = endIdx;
+    }
+    public Map<String, String> getValues() {
+        return values;
+    }
+    public void setValues(Map<String, String> values) {
+        this.values = values;
     }
 }

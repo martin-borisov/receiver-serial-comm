@@ -24,39 +24,31 @@ public class ExtInfo {
         return "ExtInfo [props=" + props + "]";
     }
 
-    public static ExtInfo parseData(String cmd, String data) {
+    public static ExtInfo parseData(String cmdString, String data) {
         ExtInfo info = new ExtInfo();
         
         // Cmd plus first byte of the data is used as key in the schema
-        String key = cmd + data.substring(0, 1);
+        String cmdKey = cmdString + data.substring(0, 1);
         
         // Extract schema definition for given command and parse the data based on it
-        ExtInfoSchemaCommand schCmd = SCHEMA.getCommands().get(key);
-        if(schCmd != null) {
-            schCmd.getProps().forEach(p -> {
-                info.getProps().put(p.getKey(), data.substring(p.getStartIdx(), p.getEndIdx()));
+        ExtInfoSchemaCommand cmd = SCHEMA.getCommands().get(cmdKey);
+        if(cmd != null) {
+            cmd.getProps().forEach(p -> {
                 
-                // TODO Add support for index mapping (see below)
+                String value = "";
+                if(p.getStartIdx() < data.length() && p.getEndIdx() <= data.length()) {
+                    
+                    value = data.substring(p.getStartIdx(), p.getEndIdx());
+                    
+                    // If schema contains value mapping get the final value from there
+                    if(p.getValues().containsKey(value)) {
+                        value = p.getValues().get(value);
+                    }
+                }
+                
+                info.getProps().put(p.getKey(), value);
             });
         }
         return info;
-    }
-    
-    private static void parseTuner(ExtInfo info, String data) {
-        info.getProps().put("Tuner Exists", data.substring(1, 2));
-        info.getProps().put("RDS Exists", data.substring(2, 3));
-        
-        String tunerRange = data.substring(3, 4);
-        switch (tunerRange) {
-            case "0": tunerRange = "AM 531 - 1611kHz / FM 76.0 - 90.0MHz"; break;
-            case "1": tunerRange = "AM 530 - 1710kHz / FM 87.5 - 107.9MHz"; break;
-            case "2": tunerRange = "AM 531 - 1611kHz / FM 87.50 - 108.00MHz"; break;
-            case "3": tunerRange = "AM 530 - 1710kHz / FM 87.5 - 108.0MHz"; break;
-            default: break;
-        }
-        info.getProps().put("Tuner Range", tunerRange);
-        
-        info.getProps().put("Tuner Page Count", data.substring(4, 5));
-        info.getProps().put("Tuner Preset Count", data.substring(5, 6));
     }
 }

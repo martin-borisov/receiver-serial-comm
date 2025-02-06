@@ -26,6 +26,15 @@ commands:
                 startIdx: 2
                 endIdx: 3
             -
+                key: " Tuner Range"
+                startIdx: 3
+                endIdx: 4
+                values: 
+                    0: "AM 531 - 1611kHz / FM 76.0 - 90.0MHz"
+                    1: "AM 530 - 1710kHz / FM 87.5 - 107.9MHz"
+                    2: "AM 531 - 1611kHz / FM 87.50 - 108.00MHz"
+                    3: "AM 530 - 1710kHz / FM 87.5 - 108.0MHz"
+            -
                 key: "Tuner Page Count"
                 startIdx: 4
                 endIdx: 5

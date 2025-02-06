@@ -10,6 +10,7 @@ import mb.serial.command.SimpleCommand;
 import mb.serial.command.SimpleCommandMap;
 import mb.serial.command.yamaha.CommandPower;
 import mb.serial.command.yamaha.CommandReady;
+import mb.serial.command.yamaha.CommandUtil;
 import mb.serial.command.yamaha.CommandVolume;
 import mb.serial.connection.yamaha.response.ResponseEvent;
 import mb.serial.connection.yamaha.response.ResponseEvent.EventType;
@@ -63,9 +64,13 @@ public class ReceiverSerialComm {
                         runner.send(new CommandReady(), new ResponseEvent(EventType.CONFIG));
                         break;
 
-                        
                     case "volume":
                         runner.send(new CommandVolume(arg.getParams()));
+                        break;
+                        
+                    case "ext":
+                        runner.send(new Command(CommandUtil.buildExtendedCommand(arg.getParams().get(0))));
+                        break;
                             
                     default:
                         

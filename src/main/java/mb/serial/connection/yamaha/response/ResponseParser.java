@@ -11,6 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mb.serial.connection.yamaha.response.ResponseEvent.EventType;
+import mb.serial.connection.yamaha.response.ext.ExtCommandStatus;
+import mb.serial.connection.yamaha.response.ext.ExtInfo;
 
 public class ResponseParser {
     private static final Logger LOG = Logger.getLogger(ResponseParser.class.getName());
@@ -26,9 +28,10 @@ public class ResponseParser {
             event = parseReport(data);
         } else if (DC1.getStrVal().equals(start)) {
             event = parseDisplayText(data);
-        } else if (DC2.getStrVal().equals(start) || DC3.getStrVal().equals(start)
-                || DC4.getStrVal().equals(start)) {
+        } else if (DC2.getStrVal().equals(start) || DC3.getStrVal().equals(start)) {
             event = parseConfig(data);
+        } else if(DC4.getStrVal().equals(start)) {
+            event = parseExtended(data);
         } else {
             LOG.warning(format("Unsupported start delimiter: {0}", start));
         }
@@ -80,5 +83,22 @@ public class ResponseParser {
         String text = data.substring(2, 10);
         
         return new ResponseEvent(EventType.TEXT, type, text);
+    }
+    
+    private ResponseEvent parseExtended(String data) {
+        
+        // Example: '20' <len>0A <cmd>000 <status>0 <content>111258 <crc>C5 
+        String sw = data.substring(0, 2);
+        int len = Integer.decode("0x" + data.substring(2, 4));
+        String cmd = data.substring(4, 7);
+        ExtCommandStatus status = ExtCommandStatus.fromCode(Integer.valueOf(data.substring(7, 8)));
+        String content = len > 4 ? data.substring(8, len + 4) : "";
+        String crc = data.substring(data.length() - 2, data.length());
+        
+        LOG.log(Level.FINE, "Ext. response [sw: {0}, len: {1}, cmd: {2}, status: {3}, content: {4}, crc: {5}", 
+                new Object[] {sw, len, cmd, status, content, crc});
+        
+        return new ResponseEvent(EventType.EXTENDED, status, 
+                status == ExtCommandStatus.ACCEPTED ?  ExtInfo.parseData(cmd, content) : null);
     }
 }

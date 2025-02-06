@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mb.serial.command.yamaha.CommandUtil;
+
 public class SimpleCommand extends Command {
     private String data;
     private Map<String, String> params;
     private List<String> paramValues;
+    private boolean extended;
     
     public SimpleCommand() {
         params = new HashMap<>();
@@ -41,6 +44,14 @@ public class SimpleCommand extends Command {
         this.paramValues = paramValues;
         parse();
     }
+    
+    public boolean isExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+    }
 
     private void parse() {
         String newData = data;
@@ -57,12 +68,17 @@ public class SimpleCommand extends Command {
             newData = MessageFormat.format(newData, actualValues.toArray());
         }
         
-        // Replace string delimiters with characters
-        for (ByteDelim delim : ByteDelim.values()) {
-            newData = newData.replaceAll(delim.getStrVal(), delim.getUcVal());
-        }
+        if(extended) {
+            command = CommandUtil.buildExtendedCommand(newData);
+        } else {
         
-        // Convert to bytes
-        command = newData.getBytes(Charset.forName("US-ASCII"));
+            // Replace string delimiters with characters
+            for (ByteDelim delim : ByteDelim.values()) {
+                newData = newData.replaceAll(delim.getStrVal(), delim.getUcVal());
+            }
+        
+            // Convert to bytes
+            command = newData.getBytes(Charset.forName("US-ASCII"));
+        }
     }
 }

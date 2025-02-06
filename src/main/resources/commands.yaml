@@ -98,6 +98,17 @@ commands:
          '6': "A"
          '7': "B"
          '8': "C"
+    
+   extsysinfo:
+      extended: true
+      data: "0000{0}"
+      params:
+         zone2: "0"
+         tuner: "1"
+         video: "2"
+         # TODO Continue from here
+            
+            
          
    # An example system command which sets the main volume to -80
    test:
@@ -108,6 +119,3 @@ commands:
       data: "<STX>21000<ETX>"
    blah:
       data: "<STX>3Blah<ETX>"
-         
-   
-   

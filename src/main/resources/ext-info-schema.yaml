@@ -1,0 +1,35 @@
+commands:
+    0000:
+        type: "Zone2"
+        props:
+            -
+                key: "Zone 2 Exists"
+                startIdx: 1
+                endIdx: 2
+            -
+                key: "Zone 2 Volume Exists"
+                startIdx: 2
+                endIdx: 3
+            -
+                key: "Zone 2 Input Selector Exists"
+                startIdx: 3
+                endIdx: 4
+    0001:
+        type: "Tuner"
+        props:
+            -
+                key: "Tuner Exists"
+                startIdx: 1
+                endIdx: 2
+            -
+                key: "RDS Exists"
+                startIdx: 2
+                endIdx: 3
+            -
+                key: "Tuner Page Count"
+                startIdx: 4
+                endIdx: 5
+            -
+                key: "Tuner Preset Count"
+                startIdx: 5
+                endIdx: 6

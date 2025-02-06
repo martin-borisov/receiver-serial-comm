@@ -1,6 +1,6 @@
 package mb.serial.command;
 
-public abstract class Command {
+public class Command {
     
     protected byte[] command;
     protected int priority;

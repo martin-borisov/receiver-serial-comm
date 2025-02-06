@@ -4,12 +4,17 @@ import static java.text.MessageFormat.format;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.CONFIG;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.REPORT;
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.TEXT;
+
+import mb.serial.connection.yamaha.response.ext.ExtCommandStatus;
+import mb.serial.connection.yamaha.response.ext.ExtInfo;
+
 import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.NONE;
+import static mb.serial.connection.yamaha.response.ResponseEvent.EventType.EXTENDED;
 
 public class ResponseEvent {
     
     public enum EventType {
-        REPORT, CONFIG, TEXT, NONE
+        REPORT, CONFIG, TEXT, EXTENDED, NONE
     }
     
     private EventType type;
@@ -27,6 +32,10 @@ public class ResponseEvent {
     
     /* For text events */
     private TextType textType;
+    
+    /* For ext events */
+    private ExtInfo extInfo;
+    private ExtCommandStatus extCommandStatus;
     
     public ResponseEvent(EventType type) {
         this.type = type;
@@ -56,6 +65,12 @@ public class ResponseEvent {
         this.commandData = commandData;
     }
     
+    public ResponseEvent(EventType type, ExtCommandStatus extCommandStatus, ExtInfo extInfo) {
+        this.type = type;
+        this.extCommandStatus = extCommandStatus;
+        this.extInfo = extInfo;
+    }
+
     @Override
     public String toString() {
         String out = null;
@@ -68,6 +83,8 @@ public class ResponseEvent {
         } else if(TEXT == type ) {
             out = format("T: {0}, Type: {1}, V:{2}", 
                   type, textType, commandData);
+        } else if(EXTENDED == type) {
+            out = format("T: {0}, Status: {1}, Data: {2}", type, extCommandStatus, extInfo);
         } else if(NONE == type) {
             out = format("T: {0}", type);
         }

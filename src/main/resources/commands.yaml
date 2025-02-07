@@ -106,9 +106,24 @@ commands:
          zone2: "0"
          tuner: "1"
          video: "2"
-         # TODO Continue from here
-            
-            
+         effectch: "3"
+         digitalformat: "4"
+         12vtrigger: "5"
+         preset: "6"
+         zone3: "7"
+         ilink: "8"
+         hdmi: "9"
+         xm: "A"
+         model: "F"
+         
+   extinputinfo:
+      extended: true
+      data: "0010{0}"
+      params:
+         spout: "0"
+         ainanalog: "1"
+         ainoptical: "2"
+         # Continue from here
          
    # An example system command which sets the main volume to -80
    test:

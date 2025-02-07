@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class ExtInfo {
     private static final ExtInfoSchema SCHEMA = ExtInfoSchema.load();
+    private String id;
     private Map<String, String> props;
 
     public ExtInfo() {
@@ -19,9 +20,17 @@ public class ExtInfo {
         this.props = props;
     }
     
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "ExtInfo [props=" + props + "]";
+        return "ExtInfo [id=" + id + ", props=" + props + "]";
     }
 
     public static ExtInfo parseData(String cmdString, String data) {
@@ -33,6 +42,7 @@ public class ExtInfo {
         // Extract schema definition for given command and parse the data based on it
         ExtInfoSchemaCommand cmd = SCHEMA.getCommands().get(cmdKey);
         if(cmd != null) {
+            info.setId(cmd.getType());
             cmd.getProps().forEach(p -> {
                 
                 String value = "";

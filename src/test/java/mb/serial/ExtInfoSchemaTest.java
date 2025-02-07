@@ -19,7 +19,6 @@ public class ExtInfoSchemaTest {
 		
 		schema.getCommands().values().forEach(c -> {
 			assertThat(c.getType(), is(not(emptyString())));
-			assertThat(c.getProps(), is(not(empty())));
 			
 			c.getProps().forEach(p -> {
 				assertThat(p.getKey(), is(not(emptyString())));

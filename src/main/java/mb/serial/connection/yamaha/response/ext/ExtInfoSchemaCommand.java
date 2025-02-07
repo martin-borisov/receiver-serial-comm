@@ -1,5 +1,6 @@
 package mb.serial.connection.yamaha.response.ext;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class ExtInfoSchemaCommand {
@@ -7,6 +8,9 @@ public class ExtInfoSchemaCommand {
     private String type;
     private Set<ExtInfoSchemaProperty> props;
     
+    public ExtInfoSchemaCommand() {
+        props = new HashSet<>();
+    }
     public String getType() {
         return type;
     }

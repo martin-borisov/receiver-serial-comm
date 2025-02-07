@@ -1,5 +1,6 @@
 commands:
-    0000:
+    # System Information
+    0000: # Keys omit status byte <cmd 3 bytes><status 1 byte (skipped)><param 1 byte>
         type: "Zone2"
         props:
             -
@@ -26,7 +27,7 @@ commands:
                 startIdx: 2
                 endIdx: 3
             -
-                key: " Tuner Range"
+                key: "Tuner Range"
                 startIdx: 3
                 endIdx: 4
                 values: 
@@ -42,3 +43,64 @@ commands:
                 key: "Tuner Preset Count"
                 startIdx: 5
                 endIdx: 6
+    0002:
+        type: "Video"
+        props:
+            -
+                key: "Video Exists"
+                startIdx: 1
+                endIdx: 2
+            -
+                key: "OST Format"
+                startIdx: 2
+                endIdx: 3
+                values: 
+                    0: "NTSC"
+                    1: "PAL"  
+            -
+                key: "Component OSD Exists"
+                startIdx: 3
+                endIdx: 4
+            - 
+                key: "Video Conversion Exists"
+                startIdx: 4
+                endIdx: 5
+    0003:
+        type: "Effect CH"
+    0004:
+        type: "Digital Format"
+    0005:
+        type: "12v Trigger"
+    0006:
+        type: "Preset"
+    0007:
+        type: "Zone3"
+        props:
+            -
+                key: "Zone 3 Exists"
+                startIdx: 1
+                endIdx: 2
+            -
+                key: "Zone 3 Volume Exists"
+                startIdx: 2
+                endIdx: 3
+            -
+                key: "Zone 3 Input Selector Exists"
+                startIdx: 3
+                endIdx: 4   
+    0008:
+        type: "iLINK"
+    0009:
+        type: "HDMI"
+    000A:
+        type: "XM"
+    000F:
+        type: "Model Name"
+        
+    # Input Information
+    0010:
+        type: "SP Out"
+    0011:
+        type: "Audio Input Analog"
+    0012:
+        type: "Audio Input Optical"

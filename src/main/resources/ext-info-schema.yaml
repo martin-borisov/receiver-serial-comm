@@ -51,7 +51,7 @@ commands:
                 startIdx: 1
                 endIdx: 2
             -
-                key: "OST Format"
+                key: "OSD Format"
                 startIdx: 2
                 endIdx: 3
                 values: 
@@ -73,6 +73,19 @@ commands:
         type: "12v Trigger"
     0006:
         type: "Preset"
+        props:
+            -
+                key: "System Memory Presets"
+                startIdx: 1
+                endIdx: 2      
+            -
+                key: "Volume Memory Presets"
+                startIdx: 2
+                endIdx: 3
+            -
+                key: "Zone2 Volume Memor Presets"
+                startIdx: 3
+                endIdx: 4
     0007:
         type: "Zone3"
         props:

@@ -111,6 +111,8 @@ commands:
          12vtrigger: "5"
          preset: "6"
          zone3: "7"
+         
+         # RX-V2400 stops here; everything below is not recognized
          ilink: "8"
          hdmi: "9"
          xm: "A"
@@ -123,7 +125,55 @@ commands:
          spout: "0"
          ainanalog: "1"
          ainoptical: "2"
-         # Continue from here
+         aincoaxial: "3"
+         ainddrf: "4"
+         vincomposites: "5"
+         vincomponent: "6"
+         aoutanalog: "7"
+         aoutoptical: "8"
+         voutcomposites: "9"
+         
+   extdspinfo:
+      extended: true
+      data: "0020{0}"
+      params:
+         program: "0"
+         userparams: "1"
+         makerparams: "2"
+              
+   # extxminfo:
+   # ioassign:
+   # rename
+   
+   extvoltrimread:
+     extended: true
+     data: "0120{0}"
+     params: &extvoltrimparams
+       phono: "0"
+       cd: "1"
+       tuner: "2"
+       cdr: "3"
+       tape: "4"
+       dvd: "5"
+       dtv: "6"
+       cbl: "7"
+       sat: "8"
+       vcr1: "9"
+       vcr2: "A"
+       vcr3: "B"
+       vaux: "C"
+       multich: "D"
+       xm: "E"
+       
+   extvoltrimwrite:
+     extended: true
+     data: "0121{0}"
+     params: 
+        <<: *extvoltrimparams
+        -6.0: "00"
+        0: "09"
+        6.0: "18"
+        # See extended volume trim command for more possible vlues
          
    # An example system command which sets the main volume to -80
    test:

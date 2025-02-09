@@ -73,7 +73,22 @@ commands:
         valLen: 2
         valCountStartIdx: 1
         valCountEndIdx: 2
-        
+        values:
+            00: "PCM None"
+            01: "PCM Normal"
+            02: "PCM Double Bypass"
+            03: "PCM Double DSP"
+            04: "PCM Quad Bypass"
+            10: "Dolby Digital None"
+            11: "Dolby Digital 5.1"
+            12: "Dolby Digital EX"
+            20: "DTS None"
+            21: "DTS 5.1"
+            22: "DTS Matrix ES"
+            23: "DTS Discrete ES"
+            24: "DTS 96/24"
+            30: "AAC None"
+            31: "AAC Normal"     
     0005:
         type: "DC Trigger"
     0006:

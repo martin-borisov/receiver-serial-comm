@@ -1,17 +1,23 @@
 package mb.serial.connection.yamaha.response.ext;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class ExtInfoSchemaCommand {
     
     private String type;
     private Set<ExtInfoSchemaProperty> props;
+    
+    // The following are needed for variable responses only
     private boolean varRes;
     private int valLen, valCountStartIdx, valCountEndIdx;
+    private Map<String, String> values;
     
     public ExtInfoSchemaCommand() {
         props = new HashSet<>();
+        values = new HashMap<>();
     }
     public String getType() {
         return type;
@@ -48,5 +54,11 @@ public class ExtInfoSchemaCommand {
     }
     public void setValCountEndIdx(int valCountEndIdx) {
         this.valCountEndIdx = valCountEndIdx;
+    }
+    public Map<String, String> getValues() {
+        return values;
+    }
+    public void setValues(Map<String, String> values) {
+        this.values = values;
     }
 }

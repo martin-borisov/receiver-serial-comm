@@ -49,7 +49,7 @@ public class CommandUtil {
         return String.format("%02X", crc & 0xFF);
     }
     
-    public static List<String> usingSplitMethod(String text, int n) {
+    public static List<String> tokenize(String text, int n) {
         return Arrays.asList(text.split("(?<=\\G.{" + n + "})"));
     }
 

@@ -10,7 +10,7 @@ public class ExtInfoSchemaProperty {
     private Map<String, String> values;
     
     public ExtInfoSchemaProperty() {
-        values = new HashMap<String, String>();
+        values = new HashMap<>();
     }
     public String getKey() {
         return key;

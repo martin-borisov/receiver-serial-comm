@@ -69,8 +69,13 @@ commands:
         type: "Effect CH"
     0004:
         type: "Digital Format"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 1
+        valCountEndIdx: 2
+        
     0005:
-        type: "12v Trigger"
+        type: "DC Trigger"
     0006:
         type: "Preset"
         props:
@@ -113,7 +118,19 @@ commands:
     # Input Information
     0010:
         type: "SP Out"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
     0011:
         type: "Audio Input Analog"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
     0012:
         type: "Audio Input Optical"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3

@@ -108,7 +108,7 @@ commands:
          video: "2"
          effectch: "3"
          digitalformat: "4"
-         12vtrigger: "5"
+         dctrigger: "5"
          preset: "6"
          zone3: "7"
          

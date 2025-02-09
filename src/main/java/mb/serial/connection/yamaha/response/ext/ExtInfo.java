@@ -3,6 +3,8 @@ package mb.serial.connection.yamaha.response.ext;
 import java.util.HashMap;
 import java.util.Map;
 
+import mb.serial.command.yamaha.CommandUtil;
+
 public class ExtInfo {
     private static final ExtInfoSchema SCHEMA = ExtInfoSchema.load();
     private String id;
@@ -43,21 +45,38 @@ public class ExtInfo {
         ExtInfoSchemaCommand cmd = SCHEMA.getCommands().get(cmdKey);
         if(cmd != null) {
             info.setId(cmd.getType());
-            cmd.getProps().forEach(p -> {
+            
+            // Variable or static length response
+            if(cmd.isVarRes()) {
+                Integer valCount = Integer.decode("0x" + data.substring(
+                        cmd.getValCountStartIdx(), cmd.getValCountEndIdx()));
+                System.out.println("### valCount: " + valCount);
+                int valLen = cmd.getValLen();
+                String values = data.substring(cmd.getValCountEndIdx(), 
+                        cmd.getValCountEndIdx() + valCount * valLen);
+                System.out.println("### split values: " + CommandUtil.usingSplitMethod(values, valLen));
                 
-                String value = "";
-                if(p.getStartIdx() < data.length() && p.getEndIdx() <= data.length()) {
-                    
-                    value = data.substring(p.getStartIdx(), p.getEndIdx());
-                    
-                    // If schema contains value mapping get the final value from there
-                    if(p.getValues().containsKey(value)) {
-                        value = p.getValues().get(value);
+                // TODO It looks like valCount returned by the receiver is not always accurate
+                // It might be better to just split until the end of the data string
+                
+            } else {
+                cmd.getProps().forEach(p -> {
+
+                    String value = "";
+                    if (p.getStartIdx() < data.length() && p.getEndIdx() <= data.length()) {
+
+                        value = data.substring(p.getStartIdx(), p.getEndIdx());
+
+                        // If schema contains value mapping get the final value
+                        // from there
+                        if (p.getValues().containsKey(value)) {
+                            value = p.getValues().get(value);
+                        }
                     }
-                }
-                
-                info.getProps().put(p.getKey(), value);
-            });
+
+                    info.getProps().put(p.getKey(), value);
+                });
+            }
         }
         return info;
     }

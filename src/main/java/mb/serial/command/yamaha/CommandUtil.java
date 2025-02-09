@@ -1,6 +1,8 @@
 package mb.serial.command.yamaha;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 import mb.serial.command.ByteDelim;
 
@@ -45,6 +47,10 @@ public class CommandUtil {
             crc = crc + c;
         }
         return String.format("%02X", crc & 0xFF);
+    }
+    
+    public static List<String> usingSplitMethod(String text, int n) {
+        return Arrays.asList(text.split("(?<=\\G.{" + n + "})"));
     }
 
 }

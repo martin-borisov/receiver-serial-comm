@@ -58,15 +58,19 @@ public class ExtInfo {
     }
     
     private static void parseVariable(ExtInfoSchemaCommand cmd, String data, ExtInfo info) {
+        int valLen = cmd.getValLen();
+        
+        // NB: It looks like valCount returned by the receiver is not always accurate.
+        // It might be better to just split until the end of the data string
+        /*
         Integer valCount = Integer.decode("0x" + data.substring(
                 cmd.getValCountStartIdx(), cmd.getValCountEndIdx()));
-        int valLen = cmd.getValLen();
         String valuesStr = data.substring(cmd.getValCountEndIdx(),
                 cmd.getValCountEndIdx() + valCount * valLen);
+        */
+        
+        String valuesStr = data.substring(cmd.getValCountEndIdx(), data.length());
         List<String> values = CommandUtil.tokenize(valuesStr, valLen);
-
-        // TODO It looks like valCount returned by the receiver is not always accurate
-        // It might be better to just split until the end of the data string
         
         // Defined vs raw value tokens
         if(!cmd.getValues().isEmpty()) {

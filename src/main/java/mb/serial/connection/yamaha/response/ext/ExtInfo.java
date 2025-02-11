@@ -92,8 +92,7 @@ public class ExtInfo {
 
                 value = data.substring(p.getStartIdx(), p.getEndIdx());
 
-                // If schema contains value mapping get the final value
-                // from there
+                // If schema contains value mapping get the final value from there
                 if(p.getValues().containsKey(value)) {
                     value = p.getValues().get(value);
                 }

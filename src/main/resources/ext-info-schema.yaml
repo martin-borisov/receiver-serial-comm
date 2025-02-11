@@ -91,6 +91,17 @@ commands:
             31: "AAC Normal"     
     0005:
         type: "DC Trigger"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 1
+        valCountEndIdx: 2
+        values:
+            00: "Terminal1 Main"
+            01: "Terminal1 Main/Zone2"
+            02: "Terminal1 Main/Zone2/Zone3"
+            10: "Terminal2 Main"
+            11: "Terminal2 Main/Zone2"
+            12: "Terminal2 Main/Zone2/Zone3"
     0006:
         type: "Preset"
         props:
@@ -137,6 +148,18 @@ commands:
         valLen: 2
         valCountStartIdx: 2
         valCountEndIdx: 3
+        values:
+            00: "Center"
+            01: "S.Back"
+            02: "Front L"
+            03: "Front R"
+            04: "Surround L"
+            05: "Surround R"
+            06: "Surround Back L"
+            07: "Surround Back R"
+            08: "Presence L"
+            09: "Presence R"
+            0A: "Subwoofer"
     0011:
         type: "Audio Input Analog"
         varRes: true

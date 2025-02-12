@@ -166,9 +166,61 @@ commands:
         valLen: 2
         valCountStartIdx: 2
         valCountEndIdx: 3
+        values: &ioanalogvalues
+            00: "PHONO"
+            01: "CD"
+            02: "TUNER"
+            03: "CD-R"
+            04: "MD/TAPE"
+            05: "DVD"
+            06: "DTV"
+            07: "CBL/SAT"
+            08: "SAT"
+            09: "VCR1"
+            0A: "CVR/VCR2"
+            0B: "VCR3"
+            0C: "V-AUX"
+            0D: "MultiCH"
+            0E: "XM"
+    0014:
+        type: "Audio Input D.D. RF"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *ioanalogvalues
+    0015:
+        type: "Video Input Comosite / S"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *ioanalogvalues
+    0017:
+        type: "Audio Output Analog"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *ioanalogvalues
+    0019:
+        type: "Video Output Comosite / S"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *ioanalogvalues
     0012:
         type: "Audio Input Optical"
         varRes: true
         valLen: 2
         valCountStartIdx: 2
         valCountEndIdx: 3
+        values: &iodigitalvalues
+            00: "1 or A"
+            01: "2 or B"
+            02: "3 or C"
+            03: "4 or D"
+            04: "5 or E"
+            05: "6 or F"
+    0013: 

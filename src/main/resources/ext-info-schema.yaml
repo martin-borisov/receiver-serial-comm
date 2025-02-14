@@ -177,7 +177,7 @@ commands:
             07: "CBL/SAT"
             08: "SAT"
             09: "VCR1"
-            0A: "CVR/VCR2"
+            0A: "VCR/VCR2"
             0B: "VCR3"
             0C: "V-AUX"
             0D: "MultiCH"
@@ -222,5 +222,43 @@ commands:
             02: "3 or C"
             03: "4 or D"
             04: "5 or E"
-            05: "6 or F"
-    0013: 
+            05: "6 or F"    
+    0013:
+        type: "Audio Input Coaxial"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *iodigitalvalues     
+    0016:
+        type: "Video Input Component"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *iodigitalvalues
+    0018:
+        type: "Audio Output Optical"
+        varRes: true
+        valLen: 2
+        valCountStartIdx: 2
+        valCountEndIdx: 3
+        values: *iodigitalvalues
+        
+# Multiple other comands here
+
+    0410:
+        type: "Speaker Distance Center"
+        props:
+            -
+                key: "Measure"
+                startIdx: 1
+                endIdx: 2
+                values:
+                    0: "Meters"
+                    1: "Feet"
+            -
+                key: "Distance"
+                startIdx: 2
+                endIdx: 5
+

@@ -57,7 +57,8 @@ public class ResponseParser {
                     CommandType.MUTE.parseData(data.substring(20, 21)), 
                     CommandType.MAIN_VOLUME.parseData(data.substring(23, 25)), 
                     CommandType.TUNER_PAGE.parseData(data.substring(33, 34)), 
-                    CommandType.PRESET_NO.parseData(data.substring(34, 35)));
+                    CommandType.PRESET_NO.parseData(data.substring(34, 35)),
+                    CommandType.DIMMER.parseData(data.substring(93, 94)));
         } else {
             configData = new ConfigData(
                     CommandType.POWER.parseData(data.substring(16, 17)));

@@ -34,6 +34,7 @@ public enum CommandType {
     PRESET_NO("2A", new IndexedCmdDataParser(asList("1", "2", "3", "4", "5", "6", "7", "8"))), 
     SP_RELAY_A("2E"), 
     SP_RELAY_B("2F"), 
+    DIMMER("61", new IndexedCmdDataParser(asList("-4", "-3", "-2", "-1", "0"))),
     UNKNOWN("NA");
     
     private String code;

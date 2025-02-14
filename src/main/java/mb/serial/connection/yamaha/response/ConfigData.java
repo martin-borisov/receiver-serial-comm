@@ -3,14 +3,14 @@ package mb.serial.connection.yamaha.response;
 public class ConfigData {
     
     private String powerState, inputSource, inputMode, 
-        muteState, masterVolume, tunerPage, tunerPreset;
+        muteState, masterVolume, tunerPage, tunerPreset, dimmer;
     
     public ConfigData(String powerState) {
         this.powerState = powerState;
     }
 
     public ConfigData(String powerState, String inputSource, String inputMode, String muteState, String masterVolume,
-            String tunerPage, String tunerPreset) {
+            String tunerPage, String tunerPreset, String dimmer) {
         this.powerState = powerState;
         this.inputSource = inputSource;
         this.inputMode = inputMode;
@@ -18,6 +18,7 @@ public class ConfigData {
         this.masterVolume = masterVolume;
         this.tunerPage = tunerPage;
         this.tunerPreset = tunerPreset;
+        this.dimmer = dimmer;
     }
 
     public String getPowerState() {
@@ -76,10 +77,18 @@ public class ConfigData {
         this.tunerPreset = tunerPreset;
     }
 
+    public String getDimmer() {
+        return dimmer;
+    }
+
+    public void setDimmer(String dimmer) {
+        this.dimmer = dimmer;
+    }
+
     @Override
     public String toString() {
         return "ConfigData [powerState=" + powerState + ", inputSource=" + inputSource + ", inputMode=" + inputMode
                 + ", muteState=" + muteState + ", masterVolume=" + masterVolume + ", tunerPage=" + tunerPage
-                + ", tunerPreset=" + tunerPreset + "]";
+                + ", tunerPreset=" + tunerPreset + ", dimmer=" + dimmer + "]";
     }
 }

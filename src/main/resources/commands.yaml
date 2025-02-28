@@ -7,6 +7,12 @@ commands:
       data: "<STX>07A1A<ETX>"
    volumedown:
       data: "<STX>07A1B<ETX>"
+   presetup:
+      data: "<STX>07A10<ETX>"
+   presetdown:
+      data: "<STX>07A11<ETX>"
+   tunerpageup:
+      data: "<STX>07A12<ETX>"
    input:
       data: "<STX>07A{0}<ETX>"
       params:
